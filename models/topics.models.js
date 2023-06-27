@@ -1,4 +1,5 @@
 const db = require('../db/connection');
+const fs = require('fs/promises')
 
 exports.selectAllTopics = () => {
     return db.query('SELECT * FROM topics;').then(({ rows }) => {
@@ -7,4 +8,13 @@ exports.selectAllTopics = () => {
         }
         return rows;
     })
+}
+
+exports.selectAllEndpoints = () => {
+    return fs.readFile('endpoints.json', 'utf-8')
+        .then((data) => {
+            const allEndpoints = JSON.parse(data);
+            return allEndpoints;
+    })
+
 }
