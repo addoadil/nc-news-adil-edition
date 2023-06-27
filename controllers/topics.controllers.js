@@ -1,4 +1,7 @@
-const { selectAllTopics, selectAllEndpoints } = require("../models/topics.models");
+const { selectAllTopics } = require("../models/topics.models");
+const fs = require('fs/promises')
+
+
 
 exports.getAllTopics = (req, res, next) => {
   selectAllTopics()
@@ -12,7 +15,11 @@ exports.getAllTopics = (req, res, next) => {
 };
 
 exports.getAllEndpoints = (req, res) => {
-  selectAllEndpoints().then((allEndpoints) => {
-    res.status(200).send(allEndpoints)
+  return fs.readFile('endpoints.json', 'utf-8')
+    .then((data) => {
+      const allEndpoints = JSON.parse(data);
+      res.status(200).send(allEndpoints)
   })
 }
+
+
