@@ -3,6 +3,7 @@ const app = require('../app');
 const seed = require('../db/seeds/seed');
 const db = require('../db/connection');
 const testData = require('../db/data/test-data/index');
+const endpoints = require('../endpoints.json');
 
 
 beforeEach(() => {
@@ -30,7 +31,6 @@ describe('GET /api/topics', () => {
 
 describe('GET /api/topics/notavalidroute', () => {
   test('Should return 404 bad request when given an invalid route', () => {
-    console.log('app...', app);
     return request(app)
       .get('/api/notavalidroute')
       .expect(404)
@@ -39,9 +39,19 @@ describe('GET /api/topics/notavalidroute', () => {
         expect(body.msg).toBe('Route not found')
       })
     });
-  });
+});
   
-
+describe('GET /api', () => {
+  test("Should return all api endpoints with relevant endpoint descriptions from endpoints.json", () => {
+    return request(app)
+      .get('/api')
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toEqual(endpoints)
+      });
+  });
+});
+  
 
 afterAll(() => {
     db.end()

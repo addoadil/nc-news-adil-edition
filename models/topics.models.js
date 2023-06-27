@@ -8,3 +8,4 @@ exports.selectAllTopics = () => {
         return rows;
     })
 }
+
