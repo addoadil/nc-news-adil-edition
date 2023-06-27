@@ -16,10 +16,12 @@ describe('GET /api/topics', () => {
           .then(({ body }) => {
             const topics = body.topics;
             expect(Array.isArray(topics)).toBe(true)
+            expect(topics).toHaveLength(3)
             topics.forEach(topic => {
               expect(topic).toHaveProperty('slug')
               expect(topic).toHaveProperty('description')
             });
+            
                        
           });
                 });
