@@ -81,6 +81,17 @@ describe('GET /api/articles/:article_id', () => {
       });
 });
 
+describe('GET /api/articles/:article_id', () => {
+  test("Should respond with 400 Bad request for an invalid article_id", () => {
+    return request(app)
+      .get('/api/articles/bananas')
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request')
+      });
+      });
+});
+
   
 afterAll(() => {
     db.end()
