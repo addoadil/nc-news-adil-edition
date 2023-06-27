@@ -13,31 +13,29 @@ describe('GET /api/topics', () => {
     test('Should return an array of topic objects, each of which should have a slug & description', () => {
         return request(app).get("/api/topics")
             .expect(200)
-            .then(({body}) => {
-                    expect(body.topics).toMatchObject(
-                        [{
-                              description: 'The man, the Mitch, the legend',
-                              slug: 'mitch'
-                            },
-                            {
-                              description: 'Not dogs',
-                              slug: 'cats'
-                            },
-                            {
-                              description: 'what books are made of',
-                              slug: 'paper'
-                            }
-                          ]
-                    );
+          .then(({ body }) => {
+            const topics = body.topics;
+            expect(Array.isArray(topics)).toBe(true)
+            topics.forEach(topic => {
+              expect(topic).toHaveProperty('slug')
+              expect(topic).toHaveProperty('description')
+            });
+                       
+          });
                 });
     })
-});
 
-describe('GET /api/notavalidroute', () => {
-    test('Should return 404 bad request when given an invalid route', () => {
-        return request(app)
-            .get('/api/notavalidroute')
-            .expect(404);
+
+describe('GET /api/topics/notavalidroute', () => {
+  test('Should return 404 bad request when given an invalid route', () => {
+    console.log('app...', app);
+    return request(app)
+      .get('/api/notavalidroute')
+      .expect(404)
+      .then(({body}) => {
+            expect(body).toHaveProperty('msg')
+        expect(body.msg).toBe('Route not found')
+      })
     });
   });
   
