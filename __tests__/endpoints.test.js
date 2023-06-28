@@ -92,6 +92,25 @@ describe('GET /api/articles/:article_id', () => {
       });
 });
 
+xdescribe('GET /api/articles/:article_id/comments', () => {
+  test("Status 200: Should respond with comments for an article filtered by article_id", () => {
+    return request(app)
+      .get('/api/articles/6/comments')
+      .expect(200)
+      .then(({ body }) => {
+        expect(Array.isArray(body)).toBe(true);
+        body.forEach((comment) => {
+          expect(comment).toHaveProperty('comment_id');
+          expect(comment).toHaveProperty('votes');
+          expect(comment).toHaveProperty('created_at');
+          expect(comment).toHaveProperty('author');
+          expect(comment).toHaveProperty('body');
+          expect(comment).toHaveProperty('article_id');
+        });
+      });
+  });
+});
+
   
 afterAll(() => {
     db.end()
