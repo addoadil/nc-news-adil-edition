@@ -4,6 +4,7 @@ const seed = require('../db/seeds/seed');
 const db = require('../db/connection');
 const testData = require('../db/data/test-data/index');
 const endpoints = require('../endpoints.json');
+const sorted = require('jest-sorted');
 
 
 beforeEach(() => {
@@ -11,22 +12,20 @@ beforeEach(() => {
 });
 
 describe('GET /api/topics', () => {
-    test('Should return an array of topic objects, each of which should have a slug & description', () => {
-        return request(app).get("/api/topics")
-            .expect(200)
-          .then(({ body }) => {
-            const topics = body.topics;
-            expect(Array.isArray(topics)).toBe(true)
-            expect(topics).toHaveLength(3)
-            topics.forEach(topic => {
-              expect(topic).toHaveProperty('slug')
-              expect(topic).toHaveProperty('description')
-            });
-            
-                       
-          });
-                });
-    })
+  test('Should return an array of topic objects, each of which should have a slug & description', () => {
+    return request(app).get("/api/topics")
+      .expect(200)
+      .then(({ body }) => {
+        const topics = body.topics;
+        expect(Array.isArray(topics)).toBe(true)
+        expect(topics).toHaveLength(3)
+        topics.forEach(topic => {
+          expect(topic).toHaveProperty('slug')
+          expect(topic).toHaveProperty('description')
+        });                
+      });
+  });
+});
 
 
 describe('GET /api/topics/notavalidroute', () => {
@@ -91,6 +90,40 @@ describe('GET /api/articles/:article_id', () => {
       });
       });
 });
+
+describe('GET /api/articles', () => {
+  test('Should return an articles array of all article objects with all properties except the body property', () => {
+    return request(app).get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        const articles = body;
+        expect(Array.isArray(articles)).toBe(true)
+        expect(articles).toHaveLength(13)
+        articles.forEach(article => {
+          expect(article).toHaveProperty('author');
+          expect(article).toHaveProperty('title');
+          expect(article).toHaveProperty('article_id');
+          expect(article).toHaveProperty('topic');
+          expect(article).toHaveProperty('created_at');
+          expect(article).toHaveProperty('votes');
+          expect(article).toHaveProperty('article_img_url');
+          expect(article).toHaveProperty('comment_count')
+        });                
+      });
+  });
+});
+
+describe('Get /api/articles', () => {
+  test('Should return an articles array of article objects with all properties except the object property in DESC order by date ', () => {
+    return request(app).get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        const articles = body;
+        expect(Array.isArray(articles)).toBe(true)
+        expect(articles).toBeSorted({ descending: true, key: 'created_at' });               
+      });
+  });
+})
 
   
 afterAll(() => {
