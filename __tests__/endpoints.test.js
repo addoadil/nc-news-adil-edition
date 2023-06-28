@@ -92,13 +92,14 @@ describe('GET /api/articles/:article_id', () => {
 });
 
 describe('GET /api/articles', () => {
-  test('Should return an articles array of all article objects with all properties except the body property', () => {
+  test('Should return an articles array of all article objects with all properties except the body property sorted by date in DESC order', () => {
     return request(app).get("/api/articles")
       .expect(200)
       .then(({ body }) => {
         const articles = body;
         expect(Array.isArray(articles)).toBe(true)
         expect(articles).toHaveLength(13)
+        expect(articles).toBeSorted({ descending: true, key: 'created_at' });               
         articles.forEach(article => {
           expect(article).toHaveProperty('author');
           expect(article).toHaveProperty('title');
@@ -108,22 +109,12 @@ describe('GET /api/articles', () => {
           expect(article).toHaveProperty('votes');
           expect(article).toHaveProperty('article_img_url');
           expect(article).toHaveProperty('comment_count')
+          expect(article).not.toHaveProperty('body')
         });                
       });
   });
 });
 
-describe('Get /api/articles', () => {
-  test('Should return an articles array of article objects with all properties except the object property in DESC order by date ', () => {
-    return request(app).get("/api/articles")
-      .expect(200)
-      .then(({ body }) => {
-        const articles = body;
-        expect(Array.isArray(articles)).toBe(true)
-        expect(articles).toBeSorted({ descending: true, key: 'created_at' });               
-      });
-  });
-})
 
   
 afterAll(() => {
