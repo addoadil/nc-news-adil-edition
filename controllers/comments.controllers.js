@@ -16,10 +16,10 @@ exports.postComment = (req, res, next) => {
     const { article_id } = req.params;
     insertComment(newComment, article_id)
         .then((data) => {
-        const comment = data.body;
-        res.status(201).send({ comment });
+            const comment = data.body;
+            res.status(201).send({ comment });
         })
         .catch((err) => {
             next(err);
-    })
+        });
 };
