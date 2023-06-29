@@ -398,6 +398,8 @@ describe('GET /api/users', () => {
       .then(({ body }) => {
         expect(Array.isArray(body.users)).toBe(true)
         body.users.forEach((user) => {
+        expect(Array.isArray(body)).toBe(true)
+        body.forEach((user) => {
           expect(user).toHaveProperty('username');
           expect(user).toHaveProperty('name');
           expect(user).toHaveProperty('avatar_url');
