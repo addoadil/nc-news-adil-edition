@@ -168,6 +168,53 @@ describe('GET /api/articles/:article_id/comments', () => {
       });
       });
 });
+
+describe('POST /api/articles/:article_id/comments', () => {
+  test("Should respond with status 201, responds with new comment after being added to db", () => {
+    const newComment = {
+      username: 'rogersop',
+      body: 'I absolutely love this article. Written with such thought!',
+    };
+    return request(app)
+      .post("/api/articles/6/comments")
+      .send(newComment)
+      .expect(201)
+      .then(({ body }) => {    
+        expect(body.comment).toBe("I absolutely love this article. Written with such thought!");
+      });
+  });
+});
+
+describe('POST /api/articles/:article_id/comments', () => {
+  test("Should respond with status 400, when a user is trying to comment but does not specify username", () => {
+    const newComment = {
+      body: 'I absolutely love this article. Written with such thought!',
+    };
+    return request(app)
+      .post("/api/articles/6/comments")
+      .send(newComment)
+      .expect(400)
+      .then(({ body }) => {    
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+});
+
+describe('POST /api/articles/:article_id/comments', () => {
+  test("Should respond with status 400, when a user is trying to comment but leaves comment blank", () => {
+    const newComment = {
+      username: 'rogersop',
+      body: '',
+    };
+    return request(app)
+      .post("/api/articles/6/comments")
+      .send(newComment)
+      .expect(400)
+      .then(({ body }) => {    
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+});
   
 afterAll(() => {
     db.end()
