@@ -20,9 +20,7 @@ app.get('/api/articles/:article_id/comments', getArticleCommentById);
 
 app.get('/api/users', getAllUsers)
 
-app.post("/api/articles/:article_id/comments", postComment)
-
-app.patch('/api/articles/:article_id', incrementArticleVote)
+app.post("/api/articles/:article_id/comments", postComment);
 
 app.patch('/api/articles/:article_id', incrementArticleVote);
 
