@@ -121,6 +121,7 @@ describe('GET /api/articles/:article_id/comments', () => {
       .get('/api/articles/6/comments')
       .expect(200)
       .then(({ body }) => {
+        expect(body).toHaveLength(1)
         expect(Array.isArray(body)).toBe(true);
         expect(body).toBeSorted({ descending: true, key: 'created_at' });
         body.forEach((comment) => {
@@ -147,12 +148,12 @@ describe('GET /api/articles/:article_id/comments', () => {
 });
 
 describe('GET /api/articles/:article_id/comments', () => {
-  test("Should respond with 404 Not found for an  article_id that exists but does not have any comments", () => {
+  test("Should respond with 200 with an empty array for an article_id that exists but does not have any comments", () => {
     return request(app)
       .get('/api/articles/10/comments')
-      .expect(404)
+      .expect(200)
       .then(({ body }) => {
-        expect(body.msg).toBe('Not found')
+        expect(body).toEqual([])
       });
       });
 });
