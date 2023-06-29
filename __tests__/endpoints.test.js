@@ -408,6 +408,16 @@ describe('GET /api/users', () => {
   });
 });
   
+describe('DELETE /api/comments/:comment_id', () => {
+  test("Should delete a comment by comment_id", () => {
+    return request(app)
+      .delete('/api/comments/1')
+      .expect(204)
+      .then((response) => {
+        expect(response.body).toEqual({})
+      });
+  });
+});
 
 describe('DELETE /api/comments/:comment_id', () => {
   test("Should respond with 404 Not found for a comment_id that does not exist", () => {
