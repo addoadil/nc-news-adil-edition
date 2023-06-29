@@ -1,6 +1,6 @@
 const { getAllArticles } = require('../controllers/articles.controllers');
 const db = require('../db/connection');
-const { filter } = require('../db/data/test-data/articles');
+const { filter, includes } = require('../db/data/test-data/articles');
 
 exports.selectArticleById = (article_id) => {
     return db.query(`SELECT * FROM articles WHERE article_id = $1;`, [article_id]).then((rows) => {
@@ -27,5 +27,26 @@ exports.selectAllArticles = () => {
             });
             return filteredArticles;
         })
-  };
+};
+  
+exports.insertVotes = (inc_votes, article_id) => {
+  if (inc_votes > 0) {
+    return db.query(`UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;`, [inc_votes, article_id])
+      .then((response) => {
+        if (!response.rows.length) {
+          return Promise.reject({ status: 404, msg: 'Not found' })
+        }
+        return response.rows;
+      });
+  } else {
+    return db.query(`UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;`, [inc_votes, article_id])
+      .then((response) => {
+        if (!response.rows.length) {
+          return Promise.reject({ status: 404, msg: 'Not found' })
+        }
+        return response.rows;
+      });
+  }
+};
+
   
