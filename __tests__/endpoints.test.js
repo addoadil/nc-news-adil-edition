@@ -186,21 +186,6 @@ describe('POST /api/articles/:article_id/comments', () => {
 });
 
 describe('POST /api/articles/:article_id/comments', () => {
-  test("Should respond with status 400, when a user is trying to comment but does not specify username", () => {
-    const newComment = {
-      body: 'I absolutely love this article. Written with such thought!',
-    };
-    return request(app)
-      .post("/api/articles/6/comments")
-      .send(newComment)
-      .expect(400)
-      .then(({ body }) => {    
-        expect(body.msg).toBe("Bad request");
-      });
-  });
-});
-
-describe('POST /api/articles/:article_id/comments', () => {
   test("Should respond with status 400, when a user is trying to comment but leaves comment blank", () => {
     const newComment = {
       username: 'rogersop',
@@ -214,6 +199,52 @@ describe('POST /api/articles/:article_id/comments', () => {
         expect(body.msg).toBe("Bad request");
       });
   });
+});
+
+describe('POST /api/articles/:article_id/comments', () => {
+  test("Should respond with 400 Bad request for an invalid article id", () => {
+    const newComment = {
+      username: 'rogersop',
+      body: 'I love this article',
+    };
+    return request(app)
+      .post("/api/articles/banas/comments")
+      .send(newComment)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request')
+      });
+    });
+});
+
+describe('POST /api/articles/:article_id/comments', () => {
+  test("Should respond with 404 Not found for an article_id that does not exist", () => {
+    const newComment = {
+      username: 'rogersop',
+      body: 'I love this article',
+    };
+    return request(app)
+      .post('/api/articles/76/comments')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Not found')
+      });
+      });
+});
+
+describe('POST /api/articles/:article_id/comments', () => {
+  test("Should respond with 404 username not found for a user that does not exist or when username field is blank when commenting", () => {
+    const newComment = {
+      username: 'daffyduck',
+      body: 'I hate this article, very poor fact finding here',
+    };
+    return request(app)
+      .post('/api/articles/6/comments')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Username not found')
+      });
+      });
 });
   
 afterAll(() => {
