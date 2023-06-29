@@ -338,7 +338,21 @@ describe('PATCH /api/articles/:article_id', () => {
     });
 });
 
-
+describe('GET /api/users', () => {
+  test("Should respond with status 200 and return array of objects for all users", () => {
+    return request(app)
+      .get('/api/users')
+      .expect(200)
+      .then(({ body }) => {
+        expect(Array.isArray(body)).toBe(true)
+        body.forEach((user) => {
+          expect(user).toHaveProperty('username');
+          expect(user).toHaveProperty('name');
+          expect(user).toHaveProperty('avatar_url');
+        });
+      });
+  });
+});
   
 afterAll(() => {
     db.end()
