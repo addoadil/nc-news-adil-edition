@@ -40,5 +40,74 @@
       "votes": 0,
       "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
     }
+  },
+  "GET /api/articles/:article_id/comments": {
+    "description": "Retrieves all comments for a given article_id",
+    "queries": [],
+    "exampleResponse": {
+      "comments": [
+        {
+          "comment_id": 1,
+          "votes": 10,
+          "created_at": "2020-10-18T12:34:56.000Z",
+          "author": "john_doe",
+          "body": "This article is great!",
+          "article_id": 6
+        }
+      ]
+    }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "Adds a comment for a given article_id",
+    "queries": [],
+    "requestBody": {
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "The username of the commenter"
+        },
+        "body": {
+          "type": "string",
+          "description": "The content of the comment"
+        }
+      }
+    },
+    "exampleResponse": {
+      "comment_id": 1,
+      "username": "john_doe",
+      "body": "This article is great!",
+      "article_id": 6,
+      "created_at": "2020-10-18T12:34:56.000Z"
+    }
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "Updates an article by article_id",
+    "queries": [],
+    "requestBody": {
+      "properties": {
+        "inc_votes": {
+          "type": "number",
+          "description": "Indicates how much the votes property should be updated by"
+        }
+      },
+      "example": {
+        "inc_votes": 1
+      }
+    },
+    "exampleResponse": {
+      "article_id": 6,
+      "title": "A",
+      "topic": "mitch",
+      "author": "icellusedkars",
+      "body": "Delicious tin of cat food",
+      "created_at": "2020-10-18T01:00:00.000Z",
+      "votes": 10,
+      "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+    }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "Deletes the given comment by comment_id",
+    "queries": [],
+    "exampleResponse": {}
   }
 }
