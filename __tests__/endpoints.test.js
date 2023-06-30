@@ -338,6 +338,41 @@ describe('PATCH /api/articles/:article_id', () => {
     });
 });
 
+describe('DELETE /api/comments/:comment_id', () => {
+  test("Should delete a comment by comment_id", () => {
+    return request(app)
+      .delete('/api/comments/1')
+      .expect(204)
+      .then((response) => {
+        expect(response.body).toEqual({})
+      });
+  });
+});
+
+describe('DELETE /api/comments/:comment_id', () => {
+  test("Should respond with 404 Not found for a comment_id that does not exist", () => {
+
+    return request(app)
+      .delete('/api/comments/76')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Not found')
+      });
+      });
+});
+
+describe('DELETE /api/comments/:comments_id', () => {
+  test("Should respond with 400 Bad request for an invalid comment_id", () => {
+    return request(app)
+      .delete("/api/comments/bananas")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request')
+      });
+    });
+});
+
+
 describe('GET /api/users', () => {
   test("Should respond with status 200 and return array of objects for all users", () => {
     return request(app)
@@ -355,94 +390,6 @@ describe('GET /api/users', () => {
   });
 });
   
-describe('DELETE /api/comments/:comment_id', () => {
-  test("Should delete a comment by comment_id", () => {
-    return request(app)
-      .delete('/api/comments/1')
-      .expect(204)
-      .then((response) => {
-        expect(response.body).toEqual({})
-      });
-  });
-});
-
-describe('DELETE /api/comments/:comment_id', () => {
-  test("Should respond with 404 Not found for a comment_id that does not exist", () => {
-
-    return request(app)
-      .delete('/api/comments/76')
-      .expect(404)
-      .then(({ body }) => {
-        expect(body.msg).toBe('Not found')
-      });
-      });
-});
-
-describe('DELETE /api/comments/:comments_id', () => {
-  test("Should respond with 400 Bad request for an invalid comment_id", () => {
-    return request(app)
-      .delete("/api/comments/bananas")
-      .expect(400)
-      .then(({ body }) => {
-        expect(body.msg).toBe('Bad request')
-      });
-    });
-});
-
-
-describe('GET /api/users', () => {
-  test("Should respond with status 200 and return array of objects for all users", () => {
-    return request(app)
-      .get('/api/users')
-      .expect(200)
-      .then(({ body }) => {
-        expect(Array.isArray(body.users)).toBe(true)
-        body.users.forEach((user) => {
-        expect(Array.isArray(body)).toBe(true)
-        body.forEach((user) => {
-          expect(user).toHaveProperty('username');
-          expect(user).toHaveProperty('name');
-          expect(user).toHaveProperty('avatar_url');
-        });
-      });
-  });
-});
-  
-describe('DELETE /api/comments/:comment_id', () => {
-  test("Should delete a comment by comment_id", () => {
-    return request(app)
-      .delete('/api/comments/1')
-      .expect(204)
-      .then((response) => {
-        expect(response.body).toEqual({})
-      });
-  });
-});
-
-describe('DELETE /api/comments/:comment_id', () => {
-  test("Should respond with 404 Not found for a comment_id that does not exist", () => {
-
-    return request(app)
-      .delete('/api/comments/76')
-      .expect(404)
-      .then(({ body }) => {
-        expect(body.msg).toBe('Not found')
-      });
-      });
-});
-
-describe('DELETE /api/comments/:comments_id', () => {
-  test("Should respond with 400 Bad request for an invalid comment_id", () => {
-    return request(app)
-      .delete("/api/comments/bananas")
-      .expect(400)
-      .then(({ body }) => {
-        expect(body.msg).toBe('Bad request')
-      });
-    });
-});
-
-
 afterAll(() => {
     db.end()
 });

@@ -9,6 +9,3 @@ exports.getAllUsers = (req, res, next) => {
             next(err)
         });
 };
-            res.status(200).send(users)
-    })
-}
