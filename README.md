@@ -57,7 +57,10 @@ following commands: 'npm run setup-dbs' and then proceed to run 'run seed' This 
 8. To view the database, you can type psql followed by the database name within the terminal and then run psql commands
 to see the data there.
 
-10. To run the tests simply type 'npm t' and this will run all tests for the project. 
+9. To run the tests simply type 'npm t' and this will run all tests for the project.
+
+Minimum version node: v20.2.0
+Minimum version Postgres: 14.8    
 
 Author: Adil Jawaid
 
