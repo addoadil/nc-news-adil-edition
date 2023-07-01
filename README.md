@@ -19,13 +19,13 @@ file.
 
 Built using:
 
-JS
-Express
-PostgreSQL
-node
-node-Postgres
-jest
-husky
+JS,
+Express,
+PostgreSQL,
+node,
+node-Postgres,
+jest,
+husky,
 SuperTest
 
 INSTRUCTIONS:
