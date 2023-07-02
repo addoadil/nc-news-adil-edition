@@ -14,37 +14,41 @@ exports.selectArticleById = (article_id) => {
 exports.selectAllArticles = (topic, sort_by, order) => {
   const validSorts = ['author_id', 'title', 'topic', 'author', 'created_at', 'votes'];
 
-  if (topic !== undefined && typeof topic !== 'string') {
+  let query = `SELECT * FROM articles `;
+ 
+  if (typeof topic === 'string' && !isNaN(Number(topic))) {
     return Promise.reject({ status: 400, msg: 'Bad request' });
   }
 
+  else if (topic !== undefined) {
+    const queryTopic = `WHERE topic = $1`
+    return db.query(query + queryTopic, [topic])
+      .then((articles) => {
+        if (!articles.rows.length) return Promise.reject({ status: 404, msg: 'Not found' });
+        return articles.rows
+      });
+  };
+
   if (sort_by && !validSorts.includes(sort_by)) {
     return Promise.reject({ status: 400, msg: 'Bad request' });
-  }
+  };
 
   if (order && order !== 'asc' && order !== 'desc') {
     return Promise.reject({ status: 400, msg: 'Bad request' });
   }  
 
-  if (topic) {
-    return db.query(`SELECT * FROM articles WHERE topic = $1;`, [topic])
-      .then((articles) => {
-        if (!articles.rows.length) {
-          return Promise.reject({status: 404, msg: 'Not found'})
-        };
-        return articles.rows;
-      });
-  }
 
   else if (validSorts.includes(sort_by)) {
-    return db.query(`SELECT * FROM articles ORDER BY ${sort_by};`)
+    const querySortBy = `ORDER BY ${sort_by}`
+    return db.query(query + querySortBy)
       .then((articles) => {
         return articles.rows;
       });
   }
     
   else if (order) {
-    return db.query(`SELECT * FROM articles ORDER BY $1;`, [order])
+    const queryOrderBy = `ORDER BY $1`
+    return db.query(query + queryOrderBy, [order])
       .then((articles) => {
         return articles.rows;
       });

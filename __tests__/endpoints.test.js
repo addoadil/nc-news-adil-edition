@@ -390,9 +390,6 @@ describe('GET /api/users', () => {
   });
 });
   
-afterAll(() => {
-    db.end()
-});
 
 describe('GET /api/articles (queries)', () => {
   test("Should respond with status 200 and return articles based on topic query specified", () => {
@@ -409,30 +406,6 @@ describe('GET /api/articles (queries)', () => {
 });
 
 describe('GET /api/articles (queries)', () => {
-  test("Should respond with status 404 and return not found for a non-existent topic", () => {
-    return request(app)
-      .get('/api/articles?topic=mickeymouseclubhouse')
-      .expect(404)
-      .then(({ body }) => {
-        expect(body.msg).toBe('Not found')
-      });
-  });
-});
-
-describe('GET /api/articles (queries)', () => {
-  xtest("Should respond with status 400 and return Bad request for an invalid topic", () => {
-    return request(app)
-      .get('/api/articles?topic=908')
-      .expect(400)
-      .then(({ body }) => {
-        expect(body.msg).toBe('Bad request');
-        expect(body.error).toBe('Invalid topic parameter');
-      });
-  });
-});
-
-
-describe('GET /api/articles (queries)', () => {
   test("Should respond with status 200 and return articles sorted_by a specified column", () => {
     return request(app)
       .get('/api/articles?sort_by=author')
@@ -440,17 +413,6 @@ describe('GET /api/articles (queries)', () => {
       .then(({ body }) => {
         expect(body).toHaveLength(13);
         expect(body).toBeSorted({ key: 'author' });
-      });
-  });
-});  
-
-describe('GET /api/articles (queries)', () => {
-  test("Should respond with status 400 and return Bad request for invalid sort_bys", () => {
-    return request(app)
-      .get('/api/articles?sort_by=pizza')
-      .expect(400)
-      .then(({ body }) => {
-        expect(body.msg).toBe('Bad request')
       });
   });
 });  
@@ -478,6 +440,17 @@ describe('GET /api/articles (queries)', () => {
 });
 
 describe('GET /api/articles (queries)', () => {
+  test("Should respond with status 400 and return Bad request for an invalid topic", () => {
+    return request(app)
+      .get('/api/articles?topic=908')
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
+      });
+  });
+});
+
+describe('GET /api/articles (queries)', () => {
   test("Should respond with status 400 and return Bad request for invalid order when not desc or asc", () => {
     return request(app)
       .get('/api/articles?order=down')
@@ -487,3 +460,29 @@ describe('GET /api/articles (queries)', () => {
       });
   });
 });  
+
+describe('GET /api/articles (queries)', () => {
+  test("Should respond with status 404 and return not found for a non-existent topic", () => {
+    return request(app)
+      .get('/api/articles?topic=mickeymouseclubhouse')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Not found')
+      });
+  });
+});
+
+describe('GET /api/articles (queries)', () => {
+  test("Should respond with status 400 and return Bad request for invalid sort_bys", () => {
+    return request(app)
+      .get('/api/articles?sort_by=pizza')
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request')
+      });
+  });
+});  
+
+afterAll(() => {
+    db.end()
+});
