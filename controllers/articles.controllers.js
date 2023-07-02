@@ -34,7 +34,3 @@ exports.incrementArticleVote = (req, res, next) => {
         });
 };
 
-exports.selectArticleByTopic = (req, res, next) => {
-    const { topic } = req.query;
-    console.log(topic);
-}
