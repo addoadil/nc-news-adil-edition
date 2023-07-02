@@ -68,8 +68,6 @@ exports.selectAllArticles = (topic, sort_by, order) => {
   };
 };
 
-
-  
 exports.insertVotes = (inc_votes, article_id) => {
   if (inc_votes > 0) {
     return db.query(`UPDATE articles SET votes = votes + $1 WHERE article_id = $2 RETURNING *;`, [inc_votes, article_id])
