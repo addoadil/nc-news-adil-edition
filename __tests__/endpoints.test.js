@@ -390,6 +390,99 @@ describe('GET /api/users', () => {
   });
 });
   
+
+describe('GET /api/articles (queries)', () => {
+  test("Should respond with status 200 and return articles based on topic query specified", () => {
+    return request(app)
+      .get('/api/articles?topic=mitch')
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toHaveLength(12);
+        body.forEach((article) => {
+          expect(article.topic).toBe('mitch');
+        });
+      });
+  });
+});
+
+describe('GET /api/articles (queries)', () => {
+  test("Should respond with status 200 and return articles sorted_by a specified column", () => {
+    return request(app)
+      .get('/api/articles?sort_by=author')
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toHaveLength(13);
+        expect(body).toBeSorted({ key: 'author' });
+      });
+  });
+});  
+
+describe('GET /api/articles (queries)', () => {
+  test("Should respond with status 200 and return articles sorted by date in ascending order when order=asc is specified", () => {
+    return request(app)
+      .get('/api/articles?order=asc')
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toHaveLength(13);
+        expect(body).toBeSorted({ ascending: true });
+      });
+  });
+
+  test("Should respond with status 200 and return articles sorted by date in descending order when order=desc is specified", () => {
+    return request(app)
+      .get('/api/articles?order=desc')
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toHaveLength(13);
+        expect(body).toBeSorted({ descending: true});
+      });
+  });
+});
+
+describe('GET /api/articles (queries)', () => {
+  test("Should respond with status 400 and return Bad request for an invalid topic", () => {
+    return request(app)
+      .get('/api/articles?topic=908')
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
+      });
+  });
+});
+
+describe('GET /api/articles (queries)', () => {
+  test("Should respond with status 400 and return Bad request for invalid order when not desc or asc", () => {
+    return request(app)
+      .get('/api/articles?order=down')
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request')
+      });
+  });
+});  
+
+describe('GET /api/articles (queries)', () => {
+  test("Should respond with status 404 and return not found for a non-existent topic", () => {
+    return request(app)
+      .get('/api/articles?topic=mickeymouseclubhouse')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Not found')
+      });
+  });
+});
+
+describe('GET /api/articles (queries)', () => {
+  test("Should respond with status 400 and return Bad request for invalid sort_bys", () => {
+    return request(app)
+      .get('/api/articles?sort_by=pizza')
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request')
+      });
+  });
+});  
+
 afterAll(() => {
     db.end()
 });

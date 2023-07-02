@@ -109,5 +109,34 @@
     "description": "Deletes the given comment by comment_id",
     "queries": [],
     "exampleResponse": {}
-  }
+  },
+  "GET /api/users": {
+    "description": "Get an array of all users.",
+    "exampleResponse": {
+      "users": [
+        {
+          "username": "john_doe",
+          "name": "John Doe",
+          "avatar_url": "https://example.com/avatar/john_doe.jpg"
+        }]
+    }},
+    "GET /api/articles": {
+      "description": "Get an array of all articles with optional queries.",
+      "queries": [
+        "topic (optional)",
+        "sort_by (optional, defaults to date)",
+        "order (optional, set to asc or desc, defaults to desc)"
+      ],
+      "exampleResponse": {
+        "articles": [
+          {
+            "title": "Seafood substitutions are increasing",
+            "topic": "cooking",
+            "author": "weegembump",
+            "body": "Text from the article..",
+            "created_at": "2018-05-30T15:59:13.341Z",
+            "votes": 0,
+            "comment_count": 6
+          }]
+      }}
 }
