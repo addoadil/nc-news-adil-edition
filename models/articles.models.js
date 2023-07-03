@@ -1,14 +1,13 @@
 const db = require('../db/connection');
 
 exports.selectArticleById = (article_id) => {
-    return db.query(`SELECT * FROM articles WHERE article_id = $1;`, [article_id]).then((rows) => {
-        if (!rows.rows.length) {
-            return Promise.reject({ status: 404, msg : 'Not found'})
-        }
-        return rows.rows[0]
-    })
-
-
+  return db.query(`SELECT * FROM articles INNER JOIN (SELECT article_id, COUNT(*) AS comment_count FROM comments WHERE article_id = $1 GROUP BY article_id) comment_counts ON articles.article_id = comment_counts.article_id WHERE articles.article_id = $1;`, [article_id])
+    .then((rows) => {
+      if (!rows.rows.length) {
+        return Promise.reject({ status: 404, msg: 'Not found' });
+      }
+      return rows.rows[0];
+    });
 };
 
 exports.selectAllArticles = (topic, sort_by, order) => {
