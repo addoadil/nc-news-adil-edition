@@ -601,6 +601,123 @@ describe('POST /api/articles', () => {
   });
 });
 
+describe('POST /api/articles', () => {
+  test("Should respond with status 400, when a user is trying to post an article but leaves author blank", () => {
+    const newArticle = {
+      author: '',
+      title: 'The coding journey',
+      body: 'I have started my journey to become an awesome software developer',
+      topic: 'technology',
+      description: 'coding related technology'
+    };
+    return request(app)
+      .post("/api/articles")
+      .send(newArticle)
+      .expect(400)
+      .then(({ body }) => {    
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+});
+
+describe('POST /api/articles', () => {
+  test("Should respond with status 404, when a user is trying to post an article but the author does not exist", () => {
+    const newArticle = {
+      author: 'buggsbunny',
+      title: 'The coding journey',
+      body: 'I have started my journey to become an awesome software developer',
+      topic: 'technology',
+      description: 'coding related technology'
+    };
+    return request(app)
+      .post("/api/articles")
+      .send(newArticle)
+      .expect(404)
+      .then(({ body }) => {    
+        expect(body.msg).toBe("Author not found. Create a user account to publish articles");
+      });
+  });
+});
+
+describe('POST /api/articles', () => {
+  test("Should respond with status 400, when a user is trying to post an article but leaves body blank", () => {
+    const newArticle = {
+      author: 'butter_bridge',
+      title: 'The coding journey',
+      body: '',
+      topic: 'technology',
+      description: 'coding related technology'
+    };
+    return request(app)
+      .post("/api/articles")
+      .send(newArticle)
+      .expect(400)
+      .then(({ body }) => {    
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+});
+
+describe('POST /api/articles', () => {
+  test("Should respond with status 400, when a user is trying to post an article but leaves topic blank", () => {
+    const newArticle = {
+      author: 'butter_bridge',
+      title: 'The coding journey',
+      body: 'I have started my journey to become an awesome software developer',
+      topic: '',
+      description: 'coding related technology'
+    };
+    return request(app)
+      .post("/api/articles")
+      .send(newArticle)
+      .expect(400)
+      .then(({ body }) => {    
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+});
+
+describe('POST /api/articles', () => {
+  test("Should respond with status 400, when a user is trying to post an article but leaves title blank", () => {
+    const newArticle = {
+      author: 'butter_bridge',
+      title: '',
+      body: 'I have started my journey to become an awesome software developer',
+      topic: 'technology',
+      description: 'coding related technology'
+    };
+    return request(app)
+      .post("/api/articles")
+      .send(newArticle)
+      .expect(400)
+      .then(({ body }) => {    
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+});
+
+describe('POST /api/articles', () => {
+  test("Should respond with status 400, when a user is trying to post an article but leaves description blank", () => {
+    const newArticle = {
+      author: 'butter_bridge',
+      title: 'technology',
+      body: 'I have started my journey to become an awesome software developer',
+      topic: 'technology',
+      description: ''
+    };
+    return request(app)
+      .post("/api/articles")
+      .send(newArticle)
+      .expect(400)
+      .then(({ body }) => {    
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+});
+
+
+
+
 afterAll(() => {
   db.end();
 });

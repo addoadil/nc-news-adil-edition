@@ -16,6 +16,10 @@ exports.handlePsqlErrors = (err, req, res, next) => {
         res.status(404).send({msg: 'Username not found'})
     }
 
+    if (err.code === '23503') {
+        res.status(404).send({ msg: 'Author not found. Create a user account to publish articles' })
+    }
+
     else (
         next(err)
     );

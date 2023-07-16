@@ -39,5 +39,8 @@ exports.postArticle = (req, res, next) => {
     insertArticle(newArticle).then((article) => {
         const returnedArticle = article[0]
         res.status(201).send(returnedArticle);
-    });
+    })
+        .catch((err) => {
+            next(err)
+        });
 };

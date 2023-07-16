@@ -89,6 +89,11 @@ exports.insertVotes = (inc_votes, article_id) => {
 
 exports.insertArticle = (newArticle) => {
   const { author, title, body, topic, article_img_url, description } = newArticle;
+
+  if (author === '' || body === '' || title === '' || topic === '' || description === '') {
+    return Promise.reject({ status: 400, msg: "Bad request" });
+  }
+
   return db.query(`INSERT INTO topics (slug, description) VALUES ($1, $2) RETURNING *`, [topic, description])
     .then((res) => {
       return db.query(`INSERT INTO articles (title, topic, author, body) VALUES ($1, $2, $3, $4) RETURNING *`, [title, topic, author, body])
