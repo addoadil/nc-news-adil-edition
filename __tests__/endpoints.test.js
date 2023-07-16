@@ -484,6 +484,41 @@ describe('GET /api/articles (queries)', () => {
   });
 });
 
+describe('GET /api/users/:username', () => {
+  test("Should respond with status 200 and return a user object all a user's properties", () => {
+    return request(app)
+      .get('/api/users/butter_bridge')
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toHaveProperty('username')
+        expect(body).toHaveProperty('avatar_url')
+        expect(body).toHaveProperty('name')
+      });
+  });
+});
+
+describe('GET /api/users/:username', () => {
+  test("Should respond with status 400 and return Bad request for an invalid username", () => {
+    return request(app)
+      .get('/api/users/74637')
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request')
+      });
+  });
+});
+
+describe('GET /api/users/:username', () => {
+  test("Should respond with status 404 and return Not found for a non-existent username", () => {
+    return request(app)
+      .get('/api/users/buggsbunny')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Not found')
+      });
+  });
+});
+
 afterAll(() => {
-    db.end()
+  db.end();
 });

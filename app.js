@@ -3,7 +3,7 @@ const { getAllTopics, getAllEndpoints } = require('./controllers/topics.controll
 const { getArticlesById, getAllArticles, incrementArticleVote } = require('./controllers/articles.controllers');
 const { handleCustomErrors, handlePsqlErrors } = require('./error-handling');
 const { getArticleCommentById, postComment, removeComment } = require('./controllers/comments.controllers');
-const { getAllUsers } = require('./controllers/users.controllers');
+const { getAllUsers, getUserByUsername } = require('./controllers/users.controllers');
 const app = express();
 
 app.use(express.json());
@@ -20,12 +20,13 @@ app.get('/api/articles/:article_id/comments', getArticleCommentById);
 
 app.get('/api/users', getAllUsers)
 
+app.get('/api/users/:username', getUserByUsername);
+
 app.post("/api/articles/:article_id/comments", postComment)
 
 app.patch('/api/articles/:article_id', incrementArticleVote);
 
 app.delete('/api/comments/:comment_id', removeComment)
-
 
 app.use(handleCustomErrors);
 
