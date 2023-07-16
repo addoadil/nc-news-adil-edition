@@ -576,7 +576,7 @@ describe('PATCH /api/comments/:comment_id', () => {
 });
 
 describe('POST /api/articles', () => {
-  test.only("Should respond with status 201, responds with new article after being added to db", () => {
+  test("Should respond with status 201, responds with new article after being added to db", () => {
     const newArticle = {
       author: 'butter_bridge',
       title: 'The coding journey',
