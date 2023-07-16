@@ -87,3 +87,14 @@ exports.insertVotes = (inc_votes, article_id) => {
   }
 };
 
+exports.insertArticle = (newArticle) => {
+  const { author, title, body, topic, article_img_url, description } = newArticle;
+  return db.query(`INSERT INTO topics (slug, description) VALUES ($1, $2) RETURNING *`, [topic, description])
+    .then((res) => {
+      return db.query(`INSERT INTO articles (title, topic, author, body) VALUES ($1, $2, $3, $4) RETURNING *`, [title, topic, author, body])
+  })
+    .then((article) => {
+      return article.rows;
+    });
+};
+

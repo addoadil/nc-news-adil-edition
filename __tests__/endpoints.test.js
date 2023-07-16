@@ -519,6 +519,88 @@ describe('GET /api/users/:username', () => {
   });
 });
 
+describe('PATCH /api/comments/:comment_id', () => {
+  test("Should respond with status 200 and update the votes on a comment", () => {
+    const incrementVote = { vote_count: 1 };
+    return request(app)
+      .patch('/api/comments/1')
+      .send(incrementVote)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.votes).toBe(17)
+      });
+  });
+});
+
+describe('PATCH /api/comments/:comment_id', () => {
+  test("Should respond with status 200 and update the votes on a comment", () => {
+    const decrementVote = { vote_count: -1 };
+    return request(app)
+      .patch('/api/comments/1')
+      .send(decrementVote)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.votes).toBe(15)
+      });
+  });
+});
+
+describe('PATCH /api/comments/:comment_id', () => {
+  test("Should respond with status 400 Bad request when the vote value is not a number", () => {
+    const votesBody = {
+      vote_count: 'abc'
+    }
+    return request(app)
+      .patch('/api/comments/6')
+      .send(votesBody)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Bad request');
+      });
+  });
+});
+
+describe('PATCH /api/comments/:comment_id', () => {
+  test("Should respond with 404 Not found for a comment that does not exist", () => {
+    const votesBody = {
+      vote_count: 5
+    };
+    return request(app)
+      .patch('/api/comments/746')
+      .send(votesBody)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe('Not found')
+      });
+      });
+});
+
+describe('POST /api/articles', () => {
+  test.only("Should respond with status 201, responds with new article after being added to db", () => {
+    const newArticle = {
+      author: 'butter_bridge',
+      title: 'The coding journey',
+      body: 'I have started my journey to become an awesome software developer',
+      topic: 'technology',
+      description: 'coding related technology'
+    };
+    return request(app)
+      .post("/api/articles")
+      .send(newArticle)
+      .expect(201)
+      .then(({ body }) => {    
+        expect(body).toHaveProperty('article_id');
+        expect(body).toHaveProperty('author');
+        expect(body).toHaveProperty('title');
+        expect(body).toHaveProperty('body');
+        expect(body).toHaveProperty('topic');
+        expect(body).toHaveProperty('votes');
+        expect(body).toHaveProperty('created_at');
+        expect(body).toHaveProperty('article_img_url');
+      });
+  });
+});
+
 afterAll(() => {
   db.end();
 });

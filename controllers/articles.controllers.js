@@ -1,4 +1,4 @@
-const { selectArticleById, selectAllArticles, insertVotes } = require("../models/articles.models");
+const { selectArticleById, selectAllArticles, insertVotes, createArticle, insertArticle } = require("../models/articles.models");
 
 exports.getArticlesById = (req, res, next) => {
     const { article_id } = req.params;
@@ -34,3 +34,10 @@ exports.incrementArticleVote = (req, res, next) => {
         });
 };
 
+exports.postArticle = (req, res, next) => {
+    const newArticle = req.body;
+    insertArticle(newArticle).then((article) => {
+        const returnedArticle = article[0]
+        res.status(201).send(returnedArticle);
+    });
+};
