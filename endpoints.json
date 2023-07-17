@@ -118,25 +118,197 @@
           "username": "john_doe",
           "name": "John Doe",
           "avatar_url": "https://example.com/avatar/john_doe.jpg"
-        }]
-    }},
-    "GET /api/articles": {
-      "description": "Get an array of all articles with optional queries.",
-      "queries": [
-        "topic (optional)",
-        "sort_by (optional, defaults to date)",
-        "order (optional, set to asc or desc, defaults to desc)"
-      ],
-      "exampleResponse": {
-        "articles": [
-          {
-            "title": "Seafood substitutions are increasing",
-            "topic": "cooking",
-            "author": "weegembump",
-            "body": "Text from the article..",
-            "created_at": "2018-05-30T15:59:13.341Z",
-            "votes": 0,
-            "comment_count": 6
-          }]
-      }}
+        }
+      ]
+    }
+  },
+  "GET /api/articles": {
+    "description": "Get an array of all articles with optional queries.",
+    "queries": [
+      "topic (optional)",
+      "sort_by (optional, defaults to date)",
+      "order (optional, set to asc or desc, defaults to desc)"
+    ],
+    "exampleResponse": {
+      "articles": [
+        {
+          "title": "Seafood substitutions are increasing",
+          "topic": "cooking",
+          "author": "weegembump",
+          "body": "Text from the article..",
+          "created_at": "2018-05-30T15:59:13.341Z",
+          "votes": 0,
+          "comment_count": 6
+        }
+      ]
+    }
+  },
+
+  "GET /api/articles/:article_id/comments": {
+    "description": "Retrieves all comments for a given article_id.",
+    "queries": [],
+    "exampleResponse": {
+      "comments": [
+        {
+          "comment_id": 1,
+          "votes": 10,
+          "created_at": "2020-10-18T12:34:56.000Z",
+          "author": "john_doe",
+          "body": "This article is great!",
+          "article_id": 6
+        }
+      ]
+    }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "Adds a comment for a given article_id.",
+    "queries": [],
+    "requestBody": {
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "The username of the commenter."
+        },
+        "body": {
+          "type": "string",
+          "description": "The content of the comment."
+        }
+      }
+    },
+    "exampleResponse": {
+      "comment_id": 1,
+      "username": "john_doe",
+      "body": "This article is great!",
+      "article_id": 6,
+      "created_at": "2020-10-18T12:34:56.000Z"
+    }
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "Updates an article by article_id.",
+    "queries": [],
+    "requestBody": {
+      "properties": {
+        "inc_votes": {
+          "type": "number",
+          "description": "Indicates how much the votes property should be updated by."
+        }
+      },
+      "example": {
+        "inc_votes": 1
+      }
+    },
+    "exampleResponse": {
+      "article_id": 6,
+      "title": "A",
+      "topic": "mitch",
+      "author": "icellusedkars",
+      "body": "Delicious tin of cat food",
+      "created_at": "2020-10-18T01:00:00.000Z",
+      "votes": 10,
+      "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+    }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "Deletes the given comment by comment_id.",
+    "queries": [],
+    "exampleResponse": {}
+  },
+  "GET /api/users": {
+    "description": "Get an array of all users.",
+    "exampleResponse": {
+      "users": [
+        {
+          "username": "john_doe",
+          "name": "John Doe",
+          "avatar_url": "https://example.com/avatar/john_doe.jpg"
+        }
+      ]
+    }
+  },
+  "GET /api/articles/:article_id": {
+    "description": "Retrieves an article object by article_id.",
+    "queries": [],
+    "exampleResponse": {
+      "article_id": 6,
+      "title": "A",
+      "topic": "mitch",
+      "author": "icellusedkars",
+      "body": "Delicious tin of cat food",
+      "created_at": "2020-10-18T01:00:00.000Z",
+      "votes": 0,
+      "article_img_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
+      "comment_count": 6
+    }
+  },
+  "GET /api/users/:username": {
+    "description": "Returns a user by username.",
+    "queries": [],
+    "exampleResponse": {
+      "username": "john_doe",
+      "avatar_url": "https://example.com/avatar/john_doe.jpg",
+      "name": "John Doe"
+    }
+  },
+  "PATCH /api/comments/:comment_id": {
+    "description": "Updates the votes on a comment given the comment's comment_id.",
+    "queries": [],
+    "requestBody": {
+      "properties": {
+        "inc_votes": {
+          "type": "number",
+          "description": "Indicates how much the votes property should be updated by."
+        }
+      },
+      "example": {
+        "inc_votes": 1
+      }
+    },
+    "exampleResponse": {
+      "comment_id": 1,
+      "votes": 11,
+      "created_at": "2020-10-18T12:34:56.000Z",
+      "author": "john_doe",
+      "body": "This article is great!",
+      "article_id": 6
+    }
+  },
+  "POST /api/articles": {
+    "description": "Adds a new article.",
+    "queries": [],
+    "requestBody": {
+      "properties": {
+        "author": {
+          "type": "string",
+          "description": "The author of the article."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the article."
+        },
+        "body": {
+          "type": "string",
+          "description": "The content/body of the article."
+        },
+        "topic": {
+          "type": "string",
+          "description": "The topic of the article."
+        },
+        "article_img_url": {
+          "type": "string",
+          "description": "The URL of the article image (optional)."
+        }
+      }
+    },
+    "exampleResponse": {
+      "article_id": 1,
+      "author": "john_doe",
+      "title": "New Article",
+      "body": "Lorem ipsum dolor sit amet...",
+      "topic": "technology",
+      "article_img_url": "https://example.com/article.jpg",
+      "votes": 0,
+      "created_at": "2023-07-17T12:34:56.000Z",
+      "comment_count": 0
+    }
+  }
 }
