@@ -12,8 +12,9 @@ exports.getAllUsers = (req, res, next) => {
 
 exports.getUserByUsername = (req, res, next) => {
     const { username } = req.params;
-    selectUserByUsername(username).then((userObj) => {
-        res.status(200).send(userObj );
+    selectUserByUsername(username)
+        .then((userObj) => {
+        res.status(200).send(userObj);
     }).catch((err) => {
         next(err)
     });
