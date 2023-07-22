@@ -11,7 +11,7 @@ exports.selectArticleById = (article_id) => {
 };
 
 exports.selectAllArticles = (topic, sort_by, order) => {
-  const validSorts = ['author_id', 'title', 'topic', 'author', 'created_at', 'votes'];
+  const validSorts = ['author_id', 'title', 'topic', 'author', 'created_at', 'votes', 'comment_count'];
 
   let query = `SELECT * FROM articles `;
  
